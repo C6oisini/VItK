@@ -39,20 +39,3 @@ python3 plot_csv.py csv/plot.csv plots
 ```
 输出到 `plots/`，每个数据集一张 PNG。柱序固定为：K-means, GMM, TMM, VItK(Ours)；每个指标最佳柱为黑色，其余灰色。
 
-## 当前 Iris 结果（覆盖写入）
-```
-Dataset: Iris | sklearn iris, 150 samples, 4 dims, 3 classes | k=3
-k-means  ARI 0.4328  NMI 0.5896  MSE 1.2735  WB 0.4671  Time 0.002  notes n_iter=4
-GMM      ARI 0.5165  NMI 0.6571  MSE 1.3692  WB 0.5207  Time 0.017  notes converged=True, n_iter=11
-vitk     ARI 0.6199  NMI 0.6588  MSE 0.9347  WB 0.3117  Time 0.028  notes iters=23
-tkmeans  ARI 0.6101  NMI 0.6526  MSE 0.9424  WB 0.3287  Time 0.027  notes iters=40
-```
-（已写入 `csv/experiments_20251211-111050.csv` 与 `csv/plot.csv`。）
-
-## 常见问题
-- **TMM 结果异常**：已通过 k-means++ 初始化、log1p/clip 等提升稳定性，如需更稳，可调 `nu_fixed`、`max_iter`、`tol`。
-- **数据过大**：调高 `--max-samples` 或过滤大文件；字符串特征暂不支持（如 `yeast.arff`）。
-- **标题遮挡/间距**：`plot_csv.py` 已统一版式，如需微调可修改 `suptitle` 与 `tight_layout` 参数。
-
-## 快速流程
-数据加载 → 预处理/标准化 → 运行 k-means / GMM / VItK / TMM → 计算 ARI/NMI/MSE/WB → 写 CSV → 选取优势集生成 `plot.csv` → `plot_csv.py` 绘图。
